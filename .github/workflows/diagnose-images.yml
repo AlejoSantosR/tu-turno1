@@ -1,0 +1,53 @@
+name: Diagnose carousel images
+
+on:
+  push:
+    paths:
+      - '.github/workflows/diagnose-images.yml'
+  workflow_dispatch:
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate image sources
+        shell: bash
+        run: |
+          set -euxo pipefail
+          echo '=== memories.jpg ==='
+          ls -lh assets/memories.jpg || true
+          file assets/memories.jpg || true
+          python3 - <<'PY'
+          from pathlib import Path
+          import base64
+
+          p=Path('assets/memories.jpg')
+          b=p.read_bytes()
+          print('memories.jpg bytes:', len(b))
+          print('memories.jpg head:', b[:16].hex())
+          print('memories.jpg tail:', b[-16:].hex())
+          print('jpeg SOI/EOI:', b.startswith(b'\xff\xd8'), b.endswith(b'\xff\xd9'))
+
+          chunks=[]
+          for i in range(1,10):
+              s=''.join(Path(f'assets/gallery/strip{i:02d}.txt').read_text().split())
+              print(f'strip{i:02d}:', len(s))
+              chunks.append(s)
+          s=''.join(chunks)
+          print('joined b64 chars:', len(s), 'mod4:', len(s)%4)
+          try:
+              raw=base64.b64decode(s, validate=True)
+              Path('/tmp/rebuilt.jpg').write_bytes(raw)
+              print('rebuilt bytes:',len(raw))
+              print('rebuilt head:',raw[:16].hex())
+              print('rebuilt tail:',raw[-16:].hex())
+              print('rebuilt SOI/EOI:',raw.startswith(b'\xff\xd8'),raw.endswith(b'\xff\xd9'))
+          except Exception as e:
+              print('STRICT BASE64 ERROR:',repr(e))
+          PY
+          echo '=== rebuilt file ==='
+          file /tmp/rebuilt.jpg || true
+          identify /tmp/rebuilt.jpg || true
+          echo '=== memories identify ==='
+          identify assets/memories.jpg || true
