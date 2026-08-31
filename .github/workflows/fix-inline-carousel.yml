@@ -1,0 +1,63 @@
+name: Fix inline carousel rendering
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-inline-carousel.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Render embedded sprite as real images
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+
+          p = Path('index.html')
+          html = p.read_text(encoding='utf-8')
+
+          # Add a real-image rule. This avoids background-position/cropping issues on mobile.
+          if '.stripimg{' not in html:
+              html = html.replace('.loading{width:100%;padding:75px 20px;color:#ffd5ad}', '.stripimg{height:248px;width:auto;display:block;flex:0 0 auto;border-radius:18px}.loading{width:100%;padding:75px 20px;color:#ffd5ad}')
+              html = html.replace('@media(max-width:520px){main{padding-top:22px}', '@media(max-width:520px){main{padding-top:22px}.stripimg{height:190px}')
+
+          start = html.index('function memories(){')
+          end = html.index('function stars(){', start)
+          old = html[start:end]
+
+          m = re.search(r"const src='(data:image/jpeg;base64,[^']+)'", old)
+          if not m:
+              raise SystemExit('Embedded carousel image was not found in index.html')
+          src = m.group(1)
+
+          replacement = """function memories(){
+            const p=document.getElementById('photos');
+            const src='""" + src + """';
+            p.innerHTML='';
+            const a=document.createElement('img');
+            a.className='stripimg'; a.src=src; a.alt='Nuestros recuerdos';
+            const b=a.cloneNode(true);
+            p.appendChild(a); p.appendChild(b);
+          }
+          """
+          html = html[:start] + replacement + html[end:]
+          p.write_text(html, encoding='utf-8')
+
+      - name: Commit fix
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          if git diff --cached --quiet; then
+            echo "Nothing to commit"
+            exit 0
+          fi
+          git commit -m "Render inline carousel reliably on mobile"
+          git push
