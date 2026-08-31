@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#171331" id="themeColor" />
+  <title>Amor · Tu historia ✨</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#171331; --bg2:#29204e; --ink:#fff9ef; --muted:rgba(255,249,239,.72);
+      --pink:#ff5d9e; --yellow:#ffd166; --aqua:#76e7dc; --violet:#9b7bff;
+      --glass:rgba(255,255,255,.08); --glass2:rgba(255,255,255,.13);
+      --line:rgba(255,255,255,.16); --shadow:0 28px 70px rgba(0,0,0,.28);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;background:var(--bg)}
+    body{
+      margin:0; color:var(--ink); font-family:'DM Sans',system-ui,sans-serif;
+      min-height:100vh; overflow-x:hidden;
+      background:
+        radial-gradient(circle at 12% 8%, rgba(155,123,255,.25), transparent 35%),
+        radial-gradient(circle at 86% 25%, rgba(255,93,158,.18), transparent 34%),
+        linear-gradient(160deg,var(--bg2),var(--bg));
+      transition:background 900ms ease,color 300ms ease;
+    }
+    body.morning{
+      --bg:#4c3a6c; --bg2:#f1929e;
+      background:radial-gradient(circle at 80% 10%,rgba(255,209,102,.42),transparent 28%),linear-gradient(160deg,#f6a4a5 0%,#7966a5 52%,#29204e 100%);
+    }
+    body.afternoon{
+      --bg:#2d235c; --bg2:#7146b8;
+      background:radial-gradient(circle at 15% 10%,rgba(255,209,102,.24),transparent 32%),radial-gradient(circle at 90% 30%,rgba(255,93,158,.22),transparent 30%),linear-gradient(160deg,#7146b8,#2d235c 68%,#171331);
+    }
+    body.night{
+      --bg:#0f1029; --bg2:#211b48;
+      background:radial-gradient(circle at 85% 12%,rgba(118,231,220,.12),transparent 28%),radial-gradient(circle at 16% 30%,rgba(155,123,255,.18),transparent 34%),linear-gradient(160deg,#211b48,#0f1029 72%);
+    }
+    button,input{font:inherit}
+    button{touch-action:manipulation}
+    .stars,.glow-orbs{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+    .star-dot{position:absolute;width:3px;height:3px;background:white;border-radius:50%;opacity:.22;animation:twinkle var(--d,4s) ease-in-out infinite;animation-delay:var(--delay,0s)}
+    @keyframes twinkle{0%,100%{opacity:.15;transform:scale(.7)}50%{opacity:.8;transform:scale(1.5)}}
+    .orb{position:absolute;border-radius:999px;filter:blur(70px);opacity:.16;animation:float 11s ease-in-out infinite alternate}
+    .orb.a{width:260px;height:260px;background:var(--pink);top:15%;left:-100px}.orb.b{width:300px;height:300px;background:var(--aqua);right:-140px;top:55%;animation-delay:-5s}
+    @keyframes float{to{transform:translateY(-45px) translateX(20px)}}
+    .topbar{
+      position:fixed;left:12px;right:12px;top:12px;z-index:40;
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+      background:rgba(17,14,38,.58);border:1px solid var(--line);backdrop-filter:blur(18px);
+      border-radius:18px;padding:10px 12px;box-shadow:0 10px 30px rgba(0,0,0,.18)
+    }
+    .timebox{display:flex;align-items:center;gap:10px;min-width:0}.time-icon{font-size:1.25rem}.timecopy{min-width:0}.timecopy strong{display:block;font-size:.83rem}.timecopy span{font-size:.69rem;color:var(--muted);white-space:nowrap}
+    .queue-mini{display:flex;align-items:center;gap:8px;font-size:.72rem;color:var(--muted)}
+    .live-dot{width:8px;height:8px;background:var(--aqua);border-radius:50%;box-shadow:0 0 0 0 rgba(118,231,220,.5);animation:ping 1.8s infinite}
+    @keyframes ping{60%{box-shadow:0 0 0 8px rgba(118,231,220,0)}}
+    .scroll-progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--yellow),var(--pink),var(--aqua));z-index:60;width:0}
+    main{position:relative;z-index:2}
+    section{min-height:100svh;display:flex;align-items:center;justify-content:center;padding:105px 22px 72px;position:relative}
+    .wrap{width:min(100%,720px);margin:auto}
+    .hero{text-align:center}
+    .eyebrow{display:inline-flex;align-items:center;gap:8px;padding:8px 13px;border:1px solid var(--line);border-radius:999px;background:var(--glass);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--yellow);font-weight:700}
+    h1,h2,h3,.display{font-family:'Fredoka',system-ui,sans-serif}
+    h1{font-size:clamp(2.65rem,11vw,5.8rem);line-height:.94;margin:22px auto 18px;max-width:760px;letter-spacing:-.04em}
+    .hero p{font-size:clamp(1rem,4vw,1.2rem);line-height:1.7;color:var(--muted);max-width:590px;margin:0 auto}
+    .hero-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:28px}
+    .btn{border:0;border-radius:999px;padding:14px 19px;font-weight:800;cursor:pointer;transition:.2s ease;box-shadow:0 10px 26px rgba(0,0,0,.15)}
+    .btn:active{transform:scale(.96)}.btn.primary{background:var(--pink);color:white}.btn.secondary{background:var(--aqua);color:#15132c}.btn.ghost{background:var(--glass);color:white;border:1px solid var(--line)}
+    .queue-card{margin:38px auto 0;background:linear-gradient(145deg,rgba(255,255,255,.13),rgba(255,255,255,.05));border:1px solid var(--line);border-radius:28px;padding:22px;box-shadow:var(--shadow);text-align:left;position:relative;overflow:hidden}
+    .queue-card:before,.queue-card:after{content:'';position:absolute;width:30px;height:30px;border-radius:50%;background:var(--bg);top:50%;transform:translateY(-50%)}.queue-card:before{left:-16px}.queue-card:after{right:-16px}
+    .queue-head{display:flex;justify-content:space-between;gap:14px;align-items:flex-start}.queue-title{font-family:'Fredoka';font-weight:700;font-size:1.08rem}.ticket-no{font-family:monospace;color:var(--yellow);font-size:.78rem;border:1px dashed rgba(255,209,102,.5);padding:5px 8px;border-radius:8px}
+    .queue-track{height:10px;border-radius:999px;background:rgba(255,255,255,.09);overflow:hidden;margin:18px 0 10px}.queue-fill{height:100%;width:12%;background:linear-gradient(90deg,var(--violet),var(--pink),var(--yellow));border-radius:inherit;transition:width 900ms ease}
+    .queue-meta{display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:.74rem}.queue-position{color:var(--aqua);font-weight:800}
+    .down{margin-top:26px;font-size:1.6rem;animation:bob 1.4s ease-in-out infinite;opacity:.7}@keyframes bob{50%{transform:translateY(8px)}}
+    .story-head{margin-bottom:26px}.story-head h2{font-size:clamp(2rem,8vw,3.6rem);margin:12px 0 10px;line-height:1.02}.story-head p{color:var(--muted);line-height:1.65}
+    .chapters{display:grid;gap:14px}
+    .chapter{background:var(--glass);border:1px solid var(--line);border-radius:24px;padding:22px;text-align:left;position:relative;overflow:hidden;transform:translateY(14px);opacity:.35;transition:.55s ease}
+    .chapter.visible{transform:none;opacity:1}.chapter .num{width:34px;height:34px;border-radius:12px;display:grid;place-items:center;background:rgba(255,209,102,.14);color:var(--yellow);font-weight:800;margin-bottom:14px}.chapter h3{font-size:1.25rem;margin:0 0 8px}.chapter p{margin:0;color:var(--muted);line-height:1.7;font-size:.95rem}.chapter .spark{position:absolute;right:16px;top:14px;font-size:1.2rem;opacity:.6}
+    .star-stage{text-align:center}.big-star{width:128px;height:128px;margin:26px auto 20px;display:grid;place-items:center;font-size:4.7rem;cursor:pointer;filter:drop-shadow(0 18px 30px rgba(255,209,102,.22));animation:starFloat 3.8s ease-in-out infinite;user-select:none}
+    @keyframes starFloat{50%{transform:translateY(-10px) rotate(4deg)}}
+    .star-message{max-width:520px;margin:0 auto;background:var(--glass);border:1px solid var(--line);border-radius:22px;padding:20px;color:var(--muted);line-height:1.7;min-height:96px;transition:.3s}.star-message strong{color:var(--yellow)}
+    .hint{font-size:.75rem;color:var(--muted);margin-top:12px}
+    .challenge{background:linear-gradient(150deg,rgba(255,93,158,.12),rgba(118,231,220,.08));border:1px solid var(--line);border-radius:30px;padding:26px;box-shadow:var(--shadow);text-align:center}
+    .challenge h2{font-size:clamp(2.1rem,8vw,3.5rem);margin:8px 0 12px}.challenge p{color:var(--muted);line-height:1.7}.accept-box{display:grid;gap:12px;margin-top:22px}.accept-input{width:100%;border-radius:15px;border:1px solid var(--line);padding:15px 16px;background:rgba(255,255,255,.07);color:white;outline:none}.accept-input::placeholder{color:rgba(255,255,255,.4)}.accept-status{min-height:22px;font-size:.82rem;color:var(--yellow)}
+    .accepted-pass{display:none;margin-top:18px;text-align:left;background:#fff9ef;color:#241d46;border-radius:20px;padding:18px;position:relative;overflow:hidden}.accepted-pass.show{display:block;animation:pop .5s cubic-bezier(.2,.8,.2,1)}@keyframes pop{from{transform:scale(.93);opacity:0}}
+    .accepted-pass:after{content:'ACEPTADO';position:absolute;right:-22px;top:22px;transform:rotate(26deg);font-weight:900;color:rgba(255,93,158,.2);font-size:1.65rem}.accepted-pass strong{font-family:'Fredoka';font-size:1.18rem}.accepted-pass small{display:block;margin-top:6px;opacity:.65}
+    .wait{text-align:center}.countdown-card{background:rgba(9,8,28,.38);border:1px solid var(--line);backdrop-filter:blur(16px);border-radius:30px;padding:24px;margin-top:22px;box-shadow:var(--shadow)}
+    .count-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.unit{padding:16px 6px;border-radius:18px;background:var(--glass);border:1px solid rgba(255,255,255,.09)}.unit b{display:block;font-family:'Fredoka';font-size:clamp(1.7rem,9vw,3rem);line-height:1;color:var(--yellow)}.unit span{display:block;margin-top:6px;font-size:.65rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+    .target-line{margin-top:16px;color:var(--muted);font-size:.84rem}.target-line strong{color:white}.notify-box{margin-top:18px;display:flex;flex-direction:column;align-items:center;gap:10px}.notify-note{font-size:.73rem;color:var(--muted);max-width:520px;line-height:1.5}
+    .arrival{display:none;margin-top:18px;padding:18px;border-radius:20px;background:rgba(118,231,220,.14);border:1px solid rgba(118,231,220,.35);color:var(--aqua);font-weight:700}.arrival.show{display:block}
+    .final-card{max-width:570px;margin:auto;text-align:center}.final-card h2{font-size:clamp(2.25rem,9vw,4rem);line-height:1;margin:14px 0}.final-card p{color:var(--muted);line-height:1.8}.signature{margin-top:22px;font-family:'Fredoka';color:var(--yellow);font-size:1.2rem}
+    .toast{position:fixed;left:50%;bottom:calc(22px + var(--safe-bottom));transform:translate(-50%,120px);z-index:100;background:#fff9ef;color:#231c45;border-radius:16px;padding:13px 16px;box-shadow:0 14px 40px rgba(0,0,0,.3);font-size:.82rem;font-weight:700;max-width:calc(100% - 30px);text-align:center;opacity:0;transition:.35s}.toast.show{transform:translate(-50%,0);opacity:1}
+    .pulse-ring{position:absolute;inset:auto 50% -45px auto;width:110px;height:110px;border:1px solid rgba(255,209,102,.22);border-radius:50%;animation:ring 3s ease-out infinite}@keyframes ring{from{transform:translateX(50%) scale(.5);opacity:.8}to{transform:translateX(50%) scale(2);opacity:0}}
+    footer{text-align:center;padding:30px 20px calc(36px + var(--safe-bottom));color:rgba(255,255,255,.45);font-size:.7rem;position:relative;z-index:2}
+
+    /* -------- BLOQUEO DESPUÉS DE ACEPTAR -------- */
+    .lock-screen{position:fixed;inset:0;z-index:500;display:none;overflow:auto;background:radial-gradient(circle at 50% 0%,rgba(127,87,214,.32),transparent 42%),linear-gradient(180deg,#101126 0%,#17102d 55%,#09081c 100%);padding:24px 16px 44px}
+    .lock-screen.show{display:flex;align-items:center;justify-content:center}
+    .lock-shell{width:min(620px,100%);text-align:center;position:relative}
+    .lock-star{font-size:clamp(3.4rem,15vw,6.2rem);filter:drop-shadow(0 0 28px rgba(255,210,63,.3));animation:lockFloat 3.2s ease-in-out infinite}
+    @keyframes lockFloat{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-10px) rotate(3deg)}}
+    .lock-kicker{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--yellow);font-weight:700;margin-top:6px}
+    .lock-title{font-family:'Fredoka';font-size:clamp(2rem,9vw,3.8rem);line-height:1.05;margin:12px 0 10px}
+    .lock-copy{color:var(--muted);max-width:520px;margin:0 auto 20px;line-height:1.7}
+    .lock-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);border-radius:28px;padding:20px;box-shadow:var(--shadow);backdrop-filter:blur(18px)}
+    .lock-count{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:14px 0 8px}
+    .lock-unit{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.09);border-radius:18px;padding:15px 5px}
+    .lock-unit b{display:block;font-family:'Fredoka';font-size:clamp(1.6rem,8vw,2.8rem);color:var(--yellow);line-height:1}
+    .lock-unit span{display:block;margin-top:6px;font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+    .lock-status{font-size:.82rem;color:var(--muted);line-height:1.5;margin:12px auto 0;max-width:460px}
+    .lock-actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:18px}
+    .unlock-panel{display:none;margin-top:18px;padding:20px;border-radius:22px;background:linear-gradient(135deg,rgba(255,210,63,.18),rgba(255,61,130,.15));border:1px solid rgba(255,210,63,.35)}
+    .unlock-panel.show{display:block;animation:unlockIn .7s cubic-bezier(.2,.8,.2,1)}
+    @keyframes unlockIn{from{opacity:0;transform:translateY(18px) scale(.97)}to{opacity:1;transform:none}}
+    .unlock-panel h3{font-family:'Fredoka';font-size:1.55rem;margin:0 0 8px}
+    .unlock-panel p{color:var(--muted);line-height:1.6;margin:0 0 16px}
+    .enter-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;border:none;cursor:pointer;font-family:'Fredoka';font-weight:700;font-size:1.02rem;padding:15px 22px;border-radius:999px;background:var(--yellow);color:#17102d;box-shadow:0 12px 30px rgba(255,210,63,.25)}
+    .privacy-note{font-size:.69rem;color:rgba(255,255,255,.45);margin-top:16px;line-height:1.5}
+    body.locked{overflow:hidden}
+
+    @media (max-width:430px){section{padding-left:16px;padding-right:16px}.topbar{left:8px;right:8px}.queue-mini{display:none}.chapter{padding:19px}.challenge{padding:20px}.countdown-card{padding:16px}.unit{padding:14px 4px}.count-grid{gap:6px}}
+    @media (prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}}
+  </style>
+</head>
+<body class="night">
+  <div class="scroll-progress" id="scrollProgress"></div>
+  <div class="stars" id="stars"></div>
+  <div class="glow-orbs"><i class="orb a"></i><i class="orb b"></i></div>
+
+  <div class="topbar">
+    <div class="timebox"><span class="time-icon" id="timeIcon">🌙</span><div class="timecopy"><strong id="daypart">Buenas noches, Amor</strong><span id="localClock">—</span></div></div>
+    <div class="queue-mini"><span class="live-dot"></span><span>fila sincronizada con este dispositivo</span></div>
+  </div>
+
+  <main>
+    <section id="inicio">
+      <div class="wrap hero">
+        <span class="eyebrow">✦ Sala de espera · Capítulo nuevo</span>
+        <h1>Hay historias que no terminan.<br>Solo aprenden a comenzar distinto.</h1>
+        <p>Esta es la fila para algo que todavía no te voy a contar. Solo necesitas una cosa: quedarte hasta el final y recordar al niño increíble que siempre has llevado contigo.</p>
+        <div class="hero-actions">
+          <button class="btn primary" onclick="document.querySelector('#historia').scrollIntoView()">Entrar a la fila ✨</button>
+          <button class="btn ghost" onclick="touchStar(true)">Tocar mi estrella</button>
+        </div>
+        <div class="queue-card">
+          <div class="queue-head"><div><div class="queue-title">Tu turno está siendo preparado</div><div style="font-size:.76rem;color:var(--muted);margin-top:4px">No hace falta correr. Lo bonito también sabe esperar.</div></div><span class="ticket-no">AMOR-0809</span></div>
+          <div class="queue-track"><div class="queue-fill" id="queueFill"></div></div>
+          <div class="queue-meta"><span>Personas simbólicas delante: <b class="queue-position" id="queuePos">7</b></span><span id="queuePhase">Preparando la historia…</span></div>
+        </div>
+        <div class="down">⌄</div>
+      </div>
+    </section>
+
+    <section id="historia">
+      <div class="wrap">
+        <div class="story-head"><span class="eyebrow">01 · La historia</span><h2>Había una vez un niño espectacular.</h2><p>No porque todo le saliera perfecto, sino porque tenía una manera muy suya de convertir cualquier día en algo que valía la pena recordar.</p></div>
+        <div class="chapters">
+          <article class="chapter"><span class="spark">🧸</span><div class="num">1</div><h3>El niño que se atrevía</h3><p>Tenía curiosidad, corazón, carácter y esa forma tan bonita de lanzarse a vivir. A veces con miedo, a veces sin mapa… pero siempre encontrando una razón para sonreír un poquito más fuerte.</p></article>
+          <article class="chapter"><span class="spark">🛤️</span><div class="num">2</div><h3>Después aprendió a crecer</h3><p>Y crecer no significó olvidar quién era. Significó entender que algunos capítulos cumplen su misión, que algunas puertas merecen cerrarse con cariño y que soltar también puede ser una forma de avanzar.</p></article>
+          <article class="chapter"><span class="spark">📖</span><div class="num">3</div><h3>Muy pronto viene una página nueva</h3><p>Una de esas que todavía huelen a primera vez. Un capítulo con espacio para reír más, elegir mejor, sentirse orgulloso de lo vivido y ser muy, muy feliz con todo lo que empieza a construirse.</p></article>
+          <article class="chapter"><span class="spark">✨</span><div class="num">4</div><h3>Y nunca va completamente solo</h3><p>Porque incluso en los días nublados hay una estrellita que sigue ahí. Sin quitarle protagonismo a su camino, sin caminar por él… solo recordándole que alguien siempre desea verlo brillando de lo mejor.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="estrella">
+      <div class="wrap star-stage">
+        <span class="eyebrow">02 · Tu estrellita</span>
+        <h2 style="font-size:clamp(2.2rem,9vw,4rem);margin:16px 0 8px">Hay luces que no necesitan estar enfrente para acompañar.</h2>
+        <p style="color:var(--muted);line-height:1.7;max-width:560px;margin:0 auto">Tócala. Cada vez te va a decir algo distinto.</p>
+        <div class="big-star" id="bigStar" onclick="touchStar()">⭐</div>
+        <div class="star-message" id="starMessage">A veces una estrella no está para decirte hacia dónde ir. Está para recordarte que <strong>sí puedes seguir</strong>.</div>
+        <div class="hint">👆 Tócala varias veces.</div>
+      </div>
+    </section>
+
+    <section id="reto">
+      <div class="wrap">
+        <div class="challenge">
+          <span class="eyebrow">03 · El reto</span>
+          <h2>¿Te animas a abrir el siguiente capítulo?</h2>
+          <p>No necesitas saber todavía de qué se trata. El reto es más sencillo —y más grande— que eso: llegar con ganas, dejarte sorprender y darte permiso de disfrutar lo que viene.</p>
+          <div class="accept-box">
+            <input id="acceptInput" class="accept-input" autocomplete="off" placeholder="Escribe aquí: Acepto el reto" />
+            <button class="btn secondary" onclick="acceptChallenge()">Confirmar que acepto ✨</button>
+            <button class="btn ghost" id="shareBtn" style="display:none" onclick="shareAcceptance()">Enviar mi confirmación</button>
+            <div class="accept-status" id="acceptStatus"></div>
+          </div>
+          <div class="accepted-pass" id="acceptedPass"><strong>🎟️ Pase confirmado: Capítulo nuevo</strong><small>Estado: listo para dejarse sorprender · Titular: Amor</small></div>
+        </div>
+      </div>
+    </section>
+</main>
+
+
+  <!-- ============ PANTALLA DE ESPERA BLOQUEADA ============ -->
+  <div class="lock-screen" id="lockScreen" aria-live="polite">
+    <div class="lock-shell">
+      <div class="lock-star">⭐</div>
+      <div class="lock-kicker" id="lockKicker">Reto aceptado · fila cerrada</div>
+      <h2 class="lock-title" id="lockTitle">Ahora sí, Amor.<br>Te toca esperar.</h2>
+      <p class="lock-copy" id="lockCopy">Tu respuesta quedó guardada en este dispositivo. Desde este momento la historia queda cerrada hasta que llegue tu turno. No necesitas buscar nada más.</p>
+      <div class="lock-card">
+        <div class="lock-count" id="lockCount">
+          <div class="lock-unit"><b id="lockDays">00</b><span>días</span></div>
+          <div class="lock-unit"><b id="lockHours">00</b><span>horas</span></div>
+          <div class="lock-unit"><b id="lockMinutes">00</b><span>min</span></div>
+          <div class="lock-unit"><b id="lockSeconds">00</b><span>seg</span></div>
+        </div>
+        <div class="lock-status" id="lockStatus">La puerta se abrirá automáticamente cuando termine el contador, usando la hora de este dispositivo.</div>
+        <div class="lock-actions" id="lockActions">
+          <button class="btn ghost" onclick="shareAcceptance()">📨 Enviar mi confirmación</button>
+          <button class="btn primary" onclick="requestNotify()">🔔 Activar avisos</button>
+        </div>
+        <div class="unlock-panel" id="unlockPanel">
+          <h3>✨ Tu turno llegó.</h3>
+          <p>La espera terminó. Hay una puerta nueva lista para ti. Cuando quieras, tócala.</p>
+          <a class="enter-btn" id="enterNext" href="#" rel="noopener">Abrir el próximo capítulo →</a>
+        </div>
+      </div>
+      <div class="privacy-note">Este bloqueo se guarda en este navegador. Si se borran los datos del sitio o se abre desde otro dispositivo, el navegador no puede reconocer la confirmación anterior.</div>
+    </div>
+  </div>
+
+  <footer>Una historia primero. La espera empieza únicamente cuando aceptes el reto. 💜</footer>
+  <div class="toast" id="toast">Listo ✨</div>
+
+<script>
+  // ==============================================
+  // CONFIGURACIÓN FÁCIL
+  // Próximo fin de semana desde 30/08/2026: sábado 05/09/2026.
+  // Cambia esta única línea si deseas otra fecha/hora.
+  // ==============================================
+  const TARGET_DATE = new Date('2026-09-05T09:00:00-05:00');
+  const QUEUE_START = new Date('2026-08-30T00:00:00-05:00');
+  // Destino final ofuscado para no mostrarlo a simple vista dentro del HTML.
+  const NEXT_PAGE = atob('aHR0cHM6Ly9hbGVqb3NhbnRvc3IuZ2l0aHViLmlvL3BhcmEtdGktMDgv');
+  const ACCEPT_KEY = 'amorAccepted';
+  const ACCEPTED_AT_KEY = 'amorAcceptedAt';
+
+  const $ = (id) => document.getElementById(id);
+  let notifyEnabled = localStorage.getItem('amorNotify') === '1';
+
+  function pad(n){ return String(n).padStart(2,'0'); }
+  function toast(msg){ const t=$('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(window.__toast); window.__toast=setTimeout(()=>t.classList.remove('show'),2800); }
+
+  function setDayPart(){
+    const now = new Date();
+    const h = now.getHours();
+    let mode='night', text='Buenas noches, Amor', icon='🌙';
+    if(h>=5 && h<12){ mode='morning'; text='Buenos días, Amor'; icon='🌤️'; }
+    else if(h>=12 && h<19){ mode='afternoon'; text='Buenas tardes, Amor'; icon='☀️'; }
+    document.body.classList.remove('morning','afternoon','night'); document.body.classList.add(mode);
+    $('daypart').textContent=text; $('timeIcon').textContent=icon;
+    const formatted = new Intl.DateTimeFormat('es-CO',{weekday:'short',day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit',second:'2-digit'}).format(now);
+    $('localClock').textContent=formatted.replace(',',' ·');
+    const colors={morning:'#7966a5',afternoon:'#7146b8',night:'#0f1029'}; $('themeColor').setAttribute('content',colors[mode]);
+  }
+
+  function updateCountdown(){
+    const now = new Date();
+    let ms = TARGET_DATE - now;
+    const accepted = localStorage.getItem(ACCEPT_KEY)==='1';
+
+    if(ms <= 0){
+      ['lockDays','lockHours','lockMinutes','lockSeconds'].forEach(k=>{ if($(k)) $(k).textContent='00'; });
+      if($('queueFill')) $('queueFill').style.width='100%';
+      if($('queuePos')) $('queuePos').textContent='0';
+      if($('queuePhase')) $('queuePhase').textContent='Tu turno llegó ✨';
+      if(accepted) unlockWaitingRoom();
+      maybeNotify('arrival','✨ Amor: tu turno llegó','La espera terminó. Ya puedes abrir el próximo capítulo.');
+      return;
+    }
+
+    const d=Math.floor(ms/86400000); ms%=86400000;
+    const h=Math.floor(ms/3600000); ms%=3600000;
+    const m=Math.floor(ms/60000); const s=Math.floor((ms%60000)/1000);
+    ['lockDays'].forEach(k=>{if($(k))$(k).textContent=pad(d)});
+    ['lockHours'].forEach(k=>{if($(k))$(k).textContent=pad(h)});
+    ['lockMinutes'].forEach(k=>{if($(k))$(k).textContent=pad(m)});
+    ['lockSeconds'].forEach(k=>{if($(k))$(k).textContent=pad(s)});
+
+    const total = TARGET_DATE - QUEUE_START;
+    const elapsed = Math.min(total, Math.max(0, now - QUEUE_START));
+    const pct = Math.max(5, Math.min(99,(elapsed/total)*100));
+    $('queueFill').style.width=pct+'%';
+    const pos=Math.max(1,Math.ceil((1-pct/100)*7)); $('queuePos').textContent=pos;
+    $('queuePhase').textContent = pct<30?'Preparando la historia…':pct<60?'Todo va tomando forma…':pct<85?'Ya casi puedes verlo…':'Tu turno se acerca…';
+
+    const rem = TARGET_DATE - now;
+    if(accepted && $('lockStatus')){
+      $('lockStatus').textContent = rem <= 24*60*60*1000
+        ? 'Ya falta muy poquito. Mantén la sorpresa cerrada: la puerta aparecerá aquí cuando llegue tu turno.'
+        : 'Confirmación guardada. Esta puerta permanece cerrada hasta que termine el contador.';
+    }
+    if(rem <= 10*60*1000) maybeNotify('10m','⏳ Falta muy poquito','Tu turno está a menos de 10 minutos.');
+    else if(rem <= 60*60*1000) maybeNotify('1h','⭐ Tu turno se acerca','Falta menos de una hora para abrir el siguiente capítulo.');
+    else if(rem <= 6*60*60*1000) maybeNotify('6h','✨ Hoy empieza algo','Faltan menos de 6 horas.');
+    else if(rem <= 24*60*60*1000) maybeNotify('24h','💜 Mañana cambia la fila','Falta menos de un día para tu turno.');
+  }
+
+  function showLockedWaitingRoom(){
+    $('lockScreen').classList.add('show');
+    document.body.classList.add('locked');
+    $('enterNext').href = '#';
+    updateCountdown();
+  }
+
+  function unlockWaitingRoom(){
+    $('lockScreen').classList.add('show');
+    document.body.classList.add('locked');
+    $('lockKicker').textContent='00 · tu turno llegó';
+    $('lockTitle').innerHTML='La espera terminó.<br>La puerta ya es tuya.';
+    $('lockCopy').textContent='Cumpliste el reto de esperar. Tu sorpresa se abrirá automáticamente en 5 segundos.';
+    $('lockCount').style.display='none';
+    $('lockActions').style.display='none';
+    $('lockStatus').textContent='Disponible desde ahora ✨';
+    $('unlockPanel').classList.add('show');
+    $('enterNext').href=NEXT_PAGE;
+    $('enterNext').onclick=()=>localStorage.setItem('amorOpenedNext','1');
+
+    if(!window.__amorFinalScheduled){
+      window.__amorFinalScheduled=true;
+      localStorage.setItem('amorOpenedNext','1');
+      let n=5;
+      $('enterNext').textContent=`Abrir ahora · ${n}s →`;
+
+      const visual=setInterval(()=>{
+        n--;
+        if(n>0) $('enterNext').textContent=`Abrir ahora · ${n}s →`;
+        else clearInterval(visual);
+      },1000);
+
+      setTimeout(()=>{
+        window.location.replace(NEXT_PAGE);
+      },5000);
+    }
+  }
+
+  function maybeNotify(key,title,body){
+    if(!notifyEnabled) return;
+    const storageKey='amorNotify_'+key;
+    if(localStorage.getItem(storageKey)==='1') return;
+    localStorage.setItem(storageKey,'1');
+    toast(title+' · '+body);
+    if(navigator.vibrate) navigator.vibrate([120,60,120]);
+    if('Notification' in window && Notification.permission==='granted'){
+      try{ new Notification(title,{body,tag:'amor-'+key}); }catch(e){}
+    }
+  }
+
+  async function requestNotify(){
+    if(!('Notification' in window)){
+      notifyEnabled=true; localStorage.setItem('amorNotify','1');
+      if($('notifyNote')) $('notifyNote').textContent='Tu navegador no permite notificaciones web desde esta vista. Dejé activos los avisos dentro de la página.';
+      toast('Avisos dentro de la página activados ✨'); return;
+    }
+    try{
+      const permission = await Notification.requestPermission();
+      if(permission==='granted'){
+        notifyEnabled=true; localStorage.setItem('amorNotify','1');
+        if($('notifyNote')) $('notifyNote').textContent='Avisos activados. Mientras esta página esté abierta, te avisará cuando el contador entre en momentos clave.';
+        toast('Notificaciones activadas 🔔');
+        new Notification('✨ Sala de espera activada',{body:'Te avisaré cuando tu turno esté cerca.'});
+      } else {
+        if($('notifyNote')) $('notifyNote').textContent='No se concedió permiso. Igual tendrás avisos visuales y vibración dentro de la página cuando esté abierta.';
+      }
+    }catch(e){ toast('No pude activar el aviso del navegador, pero sí los avisos en pantalla.'); }
+  }
+
+  const starMessages = [
+    'Hay días en los que brillar significa correr. Y otros en los que brillar es simplemente <strong>no rendirse</strong>.',
+    'Tu historia no necesita parecerse a la de nadie. Lo bonito está en que <strong>sea muy tuya</strong>.',
+    'Cerrar un capítulo no es perderlo. Es guardarlo en el lugar correcto para poder <strong>seguir escribiendo</strong>.',
+    'La felicidad no siempre entra haciendo ruido. A veces llega despacito y un día descubres que <strong>ya estás viviendo algo nuevo</strong>.',
+    'Tu estrellita no va a vivir por ti. Pero sí va a estar ahí para recordarte que <strong>alguien cree muchísimo en ti</strong>.',
+    'Y sí: todavía quedan sorpresas que no conoces. Esa es exactamente la idea. ✨'
+  ];
+  let starIndex=0;
+  function touchStar(fromHero=false){
+    starIndex=(starIndex+1)%starMessages.length;
+    $('starMessage').innerHTML=starMessages[starIndex];
+    $('bigStar').animate([{transform:'scale(1) rotate(0deg)'},{transform:'scale(1.28) rotate(16deg)'},{transform:'scale(1) rotate(0deg)'}],{duration:520,easing:'cubic-bezier(.2,.8,.2,1)'});
+    if(navigator.vibrate) navigator.vibrate(45);
+    if(fromHero){ document.querySelector('#estrella').scrollIntoView({behavior:'smooth'}); }
+  }
+
+  function acceptChallenge(){
+    const val=$('acceptInput').value.trim().toLowerCase();
+    const ok = val.includes('acepto') && val.includes('reto');
+    if(!ok){ $('acceptStatus').textContent='Pista: escribe “Acepto el reto” 😉'; $('acceptInput').animate([{transform:'translateX(0)'},{transform:'translateX(-8px)'},{transform:'translateX(8px)'},{transform:'translateX(0)'}],{duration:350}); return; }
+    localStorage.setItem(ACCEPT_KEY,'1');
+    localStorage.setItem(ACCEPTED_AT_KEY,new Date().toISOString());
+    $('acceptStatus').textContent='Confirmado. Desde aquí, la historia queda cerrada hasta tu turno. ✨';
+    $('acceptedPass').classList.add('show');
+    burst();
+    setTimeout(()=>{
+      showLockedWaitingRoom();
+      toast('Reto aceptado. La fila quedó bloqueada 💜');
+    },700);
+  }
+
+  async function shareAcceptance(){
+    const text='Acepto el reto ✨ Estoy listo para abrir el siguiente capítulo. 💜';
+    if(navigator.share){ try{ await navigator.share({title:'Reto aceptado',text}); return; }catch(e){} }
+    try{ await navigator.clipboard.writeText(text); toast('Confirmación copiada. Ahora envíala por WhatsApp 💜'); }
+    catch(e){ toast(text); }
+  }
+
+  function burst(){
+    const chars=['✨','⭐','💜','🌟','✦'];
+    for(let i=0;i<28;i++){
+      const p=document.createElement('span'); p.textContent=chars[Math.floor(Math.random()*chars.length)];
+      p.style.cssText=`position:fixed;z-index:120;left:${45+Math.random()*10}vw;top:55vh;font-size:${14+Math.random()*18}px;pointer-events:none;`;
+      document.body.appendChild(p);
+      const x=(Math.random()-.5)*420,y=-120-Math.random()*260,r=(Math.random()-.5)*540;
+      p.animate([{transform:'translate(0,0) rotate(0)',opacity:1},{transform:`translate(${x}px,${y}px) rotate(${r}deg)`,opacity:0}],{duration:1000+Math.random()*900,easing:'cubic-bezier(.1,.7,.2,1)'}).onfinish=()=>p.remove();
+    }
+  }
+
+  function buildStars(){
+    const box=$('stars'); for(let i=0;i<48;i++){ const s=document.createElement('i'); s.className='star-dot'; s.style.left=Math.random()*100+'%'; s.style.top=Math.random()*100+'%'; s.style.setProperty('--d',(2.5+Math.random()*4)+'s'); s.style.setProperty('--delay',(-Math.random()*4)+'s'); box.appendChild(s); }
+  }
+
+  function observe(){
+    const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')}),{threshold:.18});
+    document.querySelectorAll('.chapter').forEach(el=>io.observe(el));
+  }
+
+  function restore(){
+    if(localStorage.getItem(ACCEPT_KEY)==='1'){
+      $('acceptInput').value='Acepto el reto';
+      $('acceptStatus').textContent='Tu confirmación sigue guardada en este dispositivo ✨';
+      $('acceptedPass').classList.add('show');
+      if(new Date() >= TARGET_DATE) unlockWaitingRoom();
+      else showLockedWaitingRoom();
+    }
+    if(notifyEnabled && $('notifyNote')) $('notifyNote').textContent='Avisos activados en este dispositivo. Mientras esta página esté abierta, recibirás los avisos programados.';
+  }
+
+
+  window.addEventListener('scroll',()=>{
+    const max=document.documentElement.scrollHeight-innerHeight;
+    $('scrollProgress').style.width=(max>0?(scrollY/max)*100:0)+'%';
+  },{passive:true});
+
+  buildStars(); observe(); restore(); setDayPart(); updateCountdown();
+  setInterval(setDayPart,1000); setInterval(updateCountdown,1000);
+</script>
+</body>
+</html>
